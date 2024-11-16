@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reproducir MP3 con QR</title>
+  <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+  <style>
+    #qr-reader {
+      width: 300px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Escanea un código QR</h1>
+  <div id="qr-reader"></div>
+  <audio id="audio-player" controls style="display: none;">
+    <source src="ruta-a-tu-archivo.mp3" type="audio/mpeg">
+    Tu navegador no soporta el elemento de audio.
+  </audio>
+
+  <script>
+    // Inicializa el lector de QR
+    const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+      console.log(`Texto escaneado: ${decodedText}`);
+      
+      // Verifica si el texto contiene la URL del MP3
+      if (decodedText.endsWith('.mp3')) {
+        const audioPlayer = document.getElementById('audio-player');
+        audioPlayer.src = decodedText; // Asigna la URL escaneada al reproductor de audio
+        audioPlayer.style.display = 'block'; // Muestra el reproductor
+        audioPlayer.play(); // Reproduce el audio automáticamente
+      } else {
+        alert('El código QR no contiene un enlace válido a un archivo MP3.');
+      }
+
+      // Detener el lector una vez que escanea el QR
+      html5QrCodeScanner.clear();
+    };
+
+    const qrCodeErrorCallback = (errorMessage) => {
+      // Puedes usar este callback para manejar errores en el escaneo
+      console.warn(`Error de escaneo: ${errorMessage}`);
+    };
+
+    const html5QrCodeScanner = new Html5Qrcode("qr-reader");
+    html5QrCodeScanner.start(
+      { facingMode: "environment" }, // Usa la cámara trasera
+      {
+        fps: 10, // Velocidad de escaneo
+        qrbox: { width: 250, height: 250 }, // Tamaño del cuadro QR
+      },
+      qrCodeSuccessCallback,
+      qrCodeErrorCallback
+    );
+  </script>
+</body>
+</html>
