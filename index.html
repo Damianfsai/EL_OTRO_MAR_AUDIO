@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reproductor con Onda Ajustable</title>
+  <title>Reproductor con Onda Ajustada</title>
   <style>
     body {
       margin: 0;
       height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start; /* Ajusta el contenido desde la parte superior */
+      justify-content: flex-start;
       align-items: center;
       background: url('SCREEN.png') no-repeat center center/cover;
       font-family: Arial, sans-serif;
@@ -23,45 +23,17 @@
       background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
       padding: 10px 20px;
       border-radius: 10px;
-      margin-top: 20px; /* Ajustar separación desde arriba */
+      margin-top: 20px;
     }
 
     #waveform {
       position: absolute;
+      width: 80%; /* Ajusta el ancho según la línea de tu imagen */
       height: 150px;
+      top: 70%; /* Ajusta la altura para que coincida con la línea */
+      left: 10%; /* Centra horizontalmente */
       background-color: rgba(255, 255, 255, 0.1);
       border-radius: 10px;
-    }
-
-    #controls {
-      position: absolute;
-      bottom: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .slider-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    input[type="range"] {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 300px;
-      height: 6px;
-      background: #ddd;
-      outline: none;
-      border-radius: 5px;
-      margin: 0;
-    }
-
-    label {
-      font-size: 14px;
-      color: #fff;
     }
   </style>
   <script src="https://unpkg.com/wavesurfer.js"></script>
@@ -70,22 +42,8 @@
   <div id="message">Toca la pantalla para reproducir o detener</div>
   <div id="waveform"></div>
 
-  <div id="controls">
-    <div class="slider-container">
-      <label for="vertical-slider">Altura del waveform</label>
-      <input id="vertical-slider" type="range" min="0" max="90" value="50">
-    </div>
-    <div class="slider-container">
-      <label for="width-slider">Ancho del waveform</label>
-      <input id="width-slider" type="range" min="50" max="100" value="90">
-    </div>
-  </div>
-
   <script>
     const message = document.getElementById('message');
-    const waveformElement = document.getElementById('waveform');
-    const verticalSlider = document.getElementById('vertical-slider');
-    const widthSlider = document.getElementById('width-slider');
 
     // Crear una instancia de WaveSurfer
     const wavesurfer = WaveSurfer.create({
@@ -126,18 +84,6 @@
       wavesurfer.play(); // Forzar reproducción breve para habilitar contexto de audio
       wavesurfer.pause();
     }, { once: true });
-
-    // Controlar la posición vertical del waveform
-    verticalSlider.addEventListener('input', (e) => {
-      const value = e.target.value; // Rango de 0 a 90
-      waveformElement.style.top = `${value}vh`; // Ajusta la posición vertical
-    });
-
-    // Controlar el ancho del waveform
-    widthSlider.addEventListener('input', (e) => {
-      const value = e.target.value; // Rango de 50% a 100%
-      waveformElement.style.width = `${value}%`; // Ajusta el ancho
-    });
   </script>
 </body>
 </html>
