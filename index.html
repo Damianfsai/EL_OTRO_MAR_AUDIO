@@ -4,10 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reproducción en Android</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    #message {
+      font-size: 24px;
+      color: #333;
+    }
+  </style>
 </head>
 <body>
-  <h1>EL OTRO MAR</h1>
-  <p>Toca en cualquier parte de la pantalla para reproducir el audio.</p>
+  <div id="message">Toca en cualquier parte de la pantalla para empezar</div>
 
   <audio id="audio-player">
     <source src="EL_OTRO_MAR_SOUND.mp3" type="audio/mpeg">
@@ -16,17 +32,20 @@
 
   <script>
     const audioPlayer = document.getElementById('audio-player');
+    const message = document.getElementById('message');
 
-    // Agregar un evento para manejar el primer toque en la pantalla
+    // Detecta el primer toque del usuario para iniciar la reproducción
     document.body.addEventListener('click', () => {
       audioPlayer.play()
         .then(() => {
           console.log("Reproducción iniciada");
+          message.innerText = "Reproduciendo...";
         })
         .catch((error) => {
           console.error("Error al iniciar la reproducción:", error);
+          message.innerText = "No se pudo iniciar la reproducción.";
         });
-    }, { once: true }); // Se ejecuta solo la primera vez
+    }, { once: true }); // Este evento se ejecuta solo una vez
   </script>
 </body>
 </html>
