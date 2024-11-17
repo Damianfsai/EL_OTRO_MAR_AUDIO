@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reproductor con Forma de Onda</title>
+  <title>Reproductor con Onda de Audio</title>
   <style>
     body {
       margin: 0;
       height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start; /* Ajusta el contenido desde la parte superior */
       align-items: center;
       background: url('SCREEN.png') no-repeat center center/cover;
       font-family: Arial, sans-serif;
@@ -23,7 +23,7 @@
       background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
       padding: 10px 20px;
       border-radius: 10px;
-      margin-bottom: 20px;
+      margin-top: 20px; /* Ajustar separación desde arriba */
     }
 
     #waveform {
@@ -31,44 +31,19 @@
       height: 150px;
       background-color: rgba(255, 255, 255, 0.1);
       border-radius: 10px;
-      margin-bottom: 20px;
-    }
-
-    #controls {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    button {
-      background-color: rgba(0, 0, 0, 0.7);
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-
-    button:hover {
-      background-color: rgba(0, 0, 0, 0.9);
+      margin-top: auto; /* Mueve la forma de onda hacia la parte inferior */
+      margin-bottom: 20px; /* Espaciado inferior opcional */
     }
   </style>
   <!-- Cargar WaveSurfer.js desde CDN -->
   <script src="https://unpkg.com/wavesurfer.js"></script>
 </head>
 <body>
-  <div id="message">Toca en el botón de reproducir para comenzar</div>
+  <div id="message">Toca la pantalla para reproducir o detener</div>
   <div id="waveform"></div>
-  <div id="controls">
-    <button id="playPause">▶️ Reproducir</button>
-    <button id="stop">⏹️ Detener</button>
-  </div>
 
   <script>
     const message = document.getElementById('message');
-    const playPauseBtn = document.getElementById('playPause');
-    const stopBtn = document.getElementById('stop');
 
     // Crear una instancia de WaveSurfer
     const wavesurfer = WaveSurfer.create({
@@ -83,33 +58,31 @@
     // Cargar el archivo de audio
     wavesurfer.load('EL_OTRO_MAR_SOUND.mp3');
 
-    // Botón de reproducir/pausar
-    playPauseBtn.addEventListener('click', () => {
-      if (wavesurfer.isPlaying()) {
+    // Estado de reproducción
+    let isPlaying = false;
+
+    // Detectar interacción del usuario para reproducir o pausar
+    document.body.addEventListener('click', () => {
+      if (isPlaying) {
         wavesurfer.pause();
-        playPauseBtn.textContent = '▶️ Reproducir';
+        message.innerText = 'Toca la pantalla para reproducir';
+        isPlaying = false;
       } else {
         wavesurfer.play();
-        playPauseBtn.textContent = '⏸️ Pausar';
+        message.innerText = 'Toca la pantalla para detener';
+        isPlaying = true;
       }
-    });
-
-    // Botón de detener
-    stopBtn.addEventListener('click', () => {
-      wavesurfer.stop();
-      playPauseBtn.textContent = '▶️ Reproducir';
     });
 
     // Mostrar mensaje cuando el audio está listo
     wavesurfer.on('ready', () => {
-      message.innerText = 'Audio listo. Usa los controles para reproducir.';
+      message.innerText = 'Toca la pantalla para reproducir o detener';
     });
 
-    // Detectar interacción para inicializar audio (necesario en móviles)
-    document.body.addEventListener('click', () => {
-      wavesurfer.play(); // Forzar reproducción momentánea para desbloquear en móviles
-      wavesurfer.pause(); // Pausar inmediatamente
-      message.innerText = 'Audio listo. Usa los controles para reproducir.';
+    // Manejo para desbloquear audio en móviles
+    document.body.addEventListener('touchstart', () => {
+      wavesurfer.play(); // Forzar reproducción breve para habilitar contexto de audio
+      wavesurfer.pause();
     }, { once: true });
   </script>
 </body>
