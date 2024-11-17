@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reproductor con Onda Ajustada</title>
   <style>
+    :root {
+      --waveform-top: 82%; /* Altura del waveform ajustable */
+    }
+
     body {
       margin: 0;
       height: 100vh;
@@ -12,26 +16,26 @@
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
-      background: url('SCREEN2.png') no-repeat center center/cover;
+      background: url('SCREEN.png') no-repeat center center/cover;
       font-family: Arial, sans-serif;
       text-align: center;
       color: #fff;
     }
 
     #message {
-      font-size: 14px;
+      font-size: 24px;
       background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
       padding: 10px 20px;
       border-radius: 10px;
-      margin-top: 500px;
+      margin-top: 20px;
     }
 
     #waveform {
       position: absolute;
-      width: 82%; /* Ajusta el ancho según la línea de tu imagen */
+      width: 77%; /* Ajusta el ancho según la línea de tu imagen */
       height: 150px;
-      top: 65%; /* Ajusta la altura para que coincida con la línea */
-      left: 10%; /* Centra horizontalmente */
+      top: var(--waveform-top); /* Altura controlada por CSS */
+      left: 12%; /* Centra horizontalmente */
       background-color: rgba(255, 255, 255, 0.1);
       border-radius: 10px;
     }
@@ -39,7 +43,7 @@
     /* Estilo para el botón de Spotify */
     #spotify-button {
       position: absolute;
-      bottom: 180px; /* Ajusta la posición vertical */
+      bottom: 20px; /* Ajusta la posición vertical */
       right: 20px; /* Ajusta la posición horizontal */
       width: 60px;
       height: 60px;
