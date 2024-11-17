@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reproducción en Android</title>
+  <title>Reproducción con Fondo</title>
   <style>
     body {
       margin: 0;
@@ -11,14 +11,17 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #f0f0f0;
+      background: url('SCREEN.png') no-repeat center center/cover;
       font-family: Arial, sans-serif;
       text-align: center;
+      color: #fff;
     }
 
     #message {
       font-size: 24px;
-      color: #333;
+      background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente para mejor legibilidad */
+      padding: 10px 20px;
+      border-radius: 10px;
     }
   </style>
 </head>
