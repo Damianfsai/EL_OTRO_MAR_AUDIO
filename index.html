@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reproducción con Fondo</title>
+  <title>Reproductor con Forma de Onda</title>
   <style>
     body {
       margin: 0;
       height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       background: url('SCREEN.png') no-repeat center center/cover;
@@ -19,36 +20,97 @@
 
     #message {
       font-size: 24px;
-      background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente para mejor legibilidad */
+      background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
       padding: 10px 20px;
       border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    #waveform {
+      width: 90%;
+      height: 150px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    #controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    button {
+      background-color: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: rgba(0, 0, 0, 0.9);
     }
   </style>
+  <!-- Cargar WaveSurfer.js desde CDN -->
+  <script src="https://unpkg.com/wavesurfer.js"></script>
 </head>
 <body>
-  <div id="message">Toca en cualquier parte de la pantalla para empezar</div>
-
-  <audio id="audio-player">
-    <source src="EL_OTRO_MAR_SOUND.mp3" type="audio/mpeg">
-    Tu navegador no soporta el elemento de audio.
-  </audio>
+  <div id="message">Toca en el botón de reproducir para comenzar</div>
+  <div id="waveform"></div>
+  <div id="controls">
+    <button id="playPause">▶️ Reproducir</button>
+    <button id="stop">⏹️ Detener</button>
+  </div>
 
   <script>
-    const audioPlayer = document.getElementById('audio-player');
     const message = document.getElementById('message');
+    const playPauseBtn = document.getElementById('playPause');
+    const stopBtn = document.getElementById('stop');
 
-    // Detecta el primer toque del usuario para iniciar la reproducción
+    // Crear una instancia de WaveSurfer
+    const wavesurfer = WaveSurfer.create({
+      container: '#waveform',
+      waveColor: 'rgba(255, 255, 255, 0.5)',
+      progressColor: '#fff',
+      cursorColor: '#ff0',
+      barWidth: 2,
+      height: 150,
+    });
+
+    // Cargar el archivo de audio
+    wavesurfer.load('EL_OTRO_MAR_SOUND.mp3');
+
+    // Botón de reproducir/pausar
+    playPauseBtn.addEventListener('click', () => {
+      if (wavesurfer.isPlaying()) {
+        wavesurfer.pause();
+        playPauseBtn.textContent = '▶️ Reproducir';
+      } else {
+        wavesurfer.play();
+        playPauseBtn.textContent = '⏸️ Pausar';
+      }
+    });
+
+    // Botón de detener
+    stopBtn.addEventListener('click', () => {
+      wavesurfer.stop();
+      playPauseBtn.textContent = '▶️ Reproducir';
+    });
+
+    // Mostrar mensaje cuando el audio está listo
+    wavesurfer.on('ready', () => {
+      message.innerText = 'Audio listo. Usa los controles para reproducir.';
+    });
+
+    // Detectar interacción para inicializar audio (necesario en móviles)
     document.body.addEventListener('click', () => {
-      audioPlayer.play()
-        .then(() => {
-          console.log("Reproducción iniciada");
-          message.innerText = "Reproduciendo...";
-        })
-        .catch((error) => {
-          console.error("Error al iniciar la reproducción:", error);
-          message.innerText = "No se pudo iniciar la reproducción.";
-        });
-    }, { once: true }); // Este evento se ejecuta solo una vez
+      wavesurfer.play(); // Forzar reproducción momentánea para desbloquear en móviles
+      wavesurfer.pause(); // Pausar inmediatamente
+      message.innerText = 'Audio listo. Usa los controles para reproducir.';
+    }, { once: true });
   </script>
 </body>
 </html>
