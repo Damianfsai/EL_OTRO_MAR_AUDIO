@@ -3,23 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reproducción Automática</title>
+  <title>Reproducción en Android</title>
 </head>
 <body>
-  <h1>Bienvenido</h1>
-  <p>El archivo MP3 comenzará a reproducirse automáticamente.</p>
-  
-  <audio id="audio-player" autoplay>
+  <h1>EL OTRO MAR</h1>
+  <p>Toca en cualquier parte de la pantalla para reproducir el audio.</p>
+
+  <audio id="audio-player">
     <source src="EL_OTRO_MAR_SOUND.mp3" type="audio/mpeg">
     Tu navegador no soporta el elemento de audio.
   </audio>
 
   <script>
-    // Verifica si el navegador permite la reproducción automática
     const audioPlayer = document.getElementById('audio-player');
-    audioPlayer.play().catch((error) => {
-      console.warn("La reproducción automática fue bloqueada:", error);
-    });
+
+    // Agregar un evento para manejar el primer toque en la pantalla
+    document.body.addEventListener('click', () => {
+      audioPlayer.play()
+        .then(() => {
+          console.log("Reproducción iniciada");
+        })
+        .catch((error) => {
+          console.error("Error al iniciar la reproducción:", error);
+        });
+    }, { once: true }); // Se ejecuta solo la primera vez
   </script>
 </body>
 </html>
