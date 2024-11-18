@@ -28,6 +28,7 @@
       padding: 10px 20px;
       border-radius: 10px;
       margin-top: 500px;
+      transition: opacity 0.3s ease; /* Transición suave */
     }
 
     #waveform {
@@ -60,7 +61,7 @@
   <script src="https://unpkg.com/wavesurfer.js"></script>
 </head>
 <body>
-  <div id="message">Toca la pantalla para reproducir o detener</div>
+  <div id="message">Toca la pantalla para reproducir</div>
   <div id="waveform"></div>
 
   <!-- Botón de Spotify -->
@@ -89,18 +90,19 @@
     document.body.addEventListener('click', () => {
       if (isPlaying) {
         wavesurfer.pause();
+        message.style.display = 'block'; // Mostrar el mensaje
         message.innerText = 'Toca la pantalla para reproducir';
         isPlaying = false;
       } else {
         wavesurfer.play();
-        message.innerText = 'Toca la pantalla para detener';
+        message.style.display = 'none'; // Ocultar el mensaje
         isPlaying = true;
       }
     });
 
     // Mostrar mensaje cuando el audio está listo
     wavesurfer.on('ready', () => {
-      message.innerText = 'Toca la pantalla para reproducir o detener';
+      message.innerText = 'Toca la pantalla para reproducir';
     });
 
     // Manejo para desbloquear audio en móviles
